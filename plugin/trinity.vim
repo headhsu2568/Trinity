@@ -100,7 +100,7 @@ function! <SID>Trinity_InitTagList()
     " Split to the right side of the screen
     let g:Tlist_Use_Left_Window = 1
     " Set the window width
-    let g:Tlist_WinWidth = 40
+    let g:Tlist_WinWidth = 25
     " Sort by the order
     let g:Tlist_Sort_Type = "order"
     " Do not display the help info
@@ -124,9 +124,9 @@ function! <SID>Trinity_InitSourceExplorer()
 
     " // Set the height of Source Explorer window                                  "
     if has("unix")
-        let g:SrcExpl_winHeight = 13
-    else
         let g:SrcExpl_winHeight = 8
+    else
+        let g:SrcExpl_winHeight = 10
     endif
     " // Set 1 ms for refreshing the Source Explorer                               "
     let g:SrcExpl_refreshTime = 1
