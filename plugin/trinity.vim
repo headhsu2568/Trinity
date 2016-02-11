@@ -50,6 +50,16 @@ endif
 command! -nargs=0 -bar TrinityToggleAll
     \ call <SID>Trinity_Toggle()
 
+" User interface for switching TagList+SrcExpl
+
+command! -nargs=0 -bar TrinityToggleTagListSrcExpl
+    \ call <SID>Trinity_ToggleTagListSrcExpl()
+
+" User interface for switching TagList+NERDTree
+
+command! -nargs=0 -bar TrinityToggleTagListNERDTree
+    \ call <SID>Trinity_ToggleTagListNERDTree()
+
 " User interface for switching the TagList
 
 command! -nargs=0 -bar TrinityToggleTagList
@@ -476,6 +486,92 @@ function! <SID>Trinity_Toggle()
         call <SID>Trinity_InitSourceExplorer()
         SrcExpl
         let s:source_explorer_switch = 1
+        call <SID>Trinity_InitNERDTree()
+        NERDTree
+        let s:nerd_tree_switch = 1
+        let s:Trinity_switch = 1
+    endif
+
+    call <SID>Trinity_UpdateWindow()
+
+endfunction " }}}
+
+" Trinity_ToggleTagListSrcExpl() {{{
+
+" The User Interface function to open / close the Trinity of
+" TagList and Source Explorer
+
+function! <SID>Trinity_ToggleTagListSrcExpl()
+
+    if s:Trinity_tabPage == 0
+        let s:Trinity_tabPage = tabpagenr()
+    endif
+
+    if s:Trinity_tabPage != tabpagenr()
+        echohl ErrorMsg
+            echo "Trinity: Not support multiple tab pages for now."
+        echohl None
+        return
+    endif
+
+    if s:Trinity_switch == 1
+        if s:tag_list_switch == 1
+            TlistClose
+            let s:tag_list_switch = 0
+        endif
+        if s:source_explorer_switch == 1
+            SrcExplClose
+            let s:source_explorer_switch = 0
+        endif
+        let s:Trinity_switch = 0
+        let s:Trinity_tabPage = 0
+    else
+        call <SID>Trinity_InitTagList()
+        Tlist
+        let s:tag_list_switch = 1
+        call <SID>Trinity_InitSourceExplorer()
+        SrcExpl
+        let s:source_explorer_switch = 1
+        let s:Trinity_switch = 1
+    endif
+
+    call <SID>Trinity_UpdateWindow()
+
+endfunction " }}}
+
+" Trinity_ToggleTagListNERDTree() {{{
+
+" The User Interface function to open / close the Trinity of
+" TagList and NERD tree
+
+function! <SID>Trinity_ToggleTagListNERDTree()
+
+    if s:Trinity_tabPage == 0
+        let s:Trinity_tabPage = tabpagenr()
+    endif
+
+    if s:Trinity_tabPage != tabpagenr()
+        echohl ErrorMsg
+            echo "Trinity: Not support multiple tab pages for now."
+        echohl None
+        return
+    endif
+
+    if s:Trinity_switch == 1
+        if s:tag_list_switch == 1
+            TlistClose
+            let s:tag_list_switch = 0
+        endif
+        if s:nerd_tree_switch == 1
+            NERDTreeClose
+            let s:nerd_tree_switch = 0
+        endif
+        let s:Trinity_switch = 0
+        let s:Trinity_tabPage = 0
+    else
+        call <SID>Trinity_InitTagList()
+        Tlist
+        let s:tag_list_switch = 1
         call <SID>Trinity_InitNERDTree()
         NERDTree
         let s:nerd_tree_switch = 1
